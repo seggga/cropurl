@@ -29,7 +29,10 @@ func main() {
 	// logger init
 	//nolint:errcheck : errors are unlikely while working with STDOUT
 	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	defer func() {
+		_ = logger.Sync()
+	}()
+
 	slogger := logger.Sugar()
 	slogger.Info("Starting the application...")
 
