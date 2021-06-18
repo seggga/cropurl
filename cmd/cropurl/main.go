@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,46 +14,60 @@ import (
 	"go.uber.org/zap"
 )
 
+var (
+	configPath string
+)
+
+func init() {
+	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to configuration TOML-file")
+}
+
 func main() {
 
+	flag.Parse()
+	fmt.Printf("%v\n", configPath)
 	// logger init
-
-	//nolint:errcheck Не может быть ошибки, т.к. работаем с stdout
+	//nolint:errcheck : errors are unlikely while working with STDOUT
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
-
 	slogger := logger.Sugar()
 	slogger.Info("Starting the application...")
-	slogger.Info("Reading configuration and initializing resources...")
 
-	storage, err := stor.New()
-
-	rsc, err := resources.New(slogger, storage)
+	// initializing storage
+	slogger.Info("Configuring and initializing storage...")
+	storage, err := stor.New(configPath)
 	if err != nil {
-		slogger.Panic("Can't initialize resources.", "err", err)
+		slogger.Errorw("error reading config for storage", err)
 	}
-
+	rsc, err := resources.New(storage)
+	if err != nil {
+		slogger.Errorw("Can not initialize storage.", err)
+	}
 	defer func() {
 		err = rsc.Release()
 		if err != nil {
-			slogger.Errorw("Got an error during resources release.", "err", err)
+			slogger.Errorw("error during storage release.", "err", err)
 		}
 	}()
 
-	slogger.Info("Configuring the application units...")
-	slogger.Info("Starting the server...")
-	rapi := restapi.New(slogger)
+	// initializing API server
+	slogger.Info("Configuring REST API server...")
+	rapi, err := restapi.New(slogger, storage, configPath)
+	if err != nil {
+		slogger.Errorw("error configuring REST API server", err)
+	}
+
+	slogger.Info("Starting REST API server...")
+	//nolint:errcheck : errors are hendled with the channel and will cause stopping the aplication
 	rapi.Start()
 	slogger.Info("The application is ready to serve requests.")
 
-	// stopping API server
+	// waiting for events to stop API server
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 	select {
 	case x := <-interrupt:
 		slogger.Infow("Received a signal.", "signal", x.String())
-	// case err := <-diag.Notify():
-	// 	slogger.Errorw("Received an error from the diagnostics server.", "err", err)
 	case err := <-rapi.Notify():
 		slogger.Errorw("Received an error from the business logic server.", "err", err)
 	}

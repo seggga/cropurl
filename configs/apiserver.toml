@@ -1,1 +1,2 @@
-some_data = "data"
+API_ADDR = "localhost:8080"
+POSTGRES_CONN = "localhost:12323"

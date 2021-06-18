@@ -1,18 +1,27 @@
 package file
 
-import "os"
+import (
+	"fmt"
+	"os"
+
+	"github.com/BurntSushi/toml"
+)
 
 // FileStorage ...
 type FileStorage struct {
-	FileName    string
+	FileName    string `toml:"FILE_NAME"`
 	FileHandler os.File
 }
 
-func New() (*FileStorage, error) {
-	
-	return &FileStorage{
-		FileName: ,
-	}, nil
+func New(configPath string) (*FileStorage, error) {
+
+	fileStore := new(FileStorage)
+	_, err := toml.DecodeFile(configPath, fileStore)
+	if err != nil {
+		return nil, fmt.Errorf("error reading TOML config for file-storage, %w", err)
+	}
+
+	return fileStore, nil
 }
 
 func (fst *FileStorage) Login() error {

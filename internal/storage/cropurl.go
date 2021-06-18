@@ -1,12 +1,12 @@
 package storage
 
+import "github.com/seggga/cropurl/internal/storage/model"
+
 // CropURLStorage describes storage neccessary methods to work with the application
 type CropURLStorage interface {
 	Close()
-	Login() error
-	Logout() error
-	NewShort() error
-	Resolve() error
-	Delete() error
-	ViewInfo() error
+
+	IsSet(string) bool
+	AddURI(*model.LinkData) error
+	Resolve(string) (string, error)
 }

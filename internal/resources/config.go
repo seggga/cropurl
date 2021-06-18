@@ -7,7 +7,7 @@ import (
 	"github.com/seggga/cropurl/internal/storage"
 
 	"github.com/kelseyhightower/envconfig"
-	"go.uber.org/zap"
+	//"go.uber.org/zap"
 )
 
 type Resources struct {
@@ -22,7 +22,7 @@ type Config struct {
 	DBURL       string `envconfig:"DB_URL" default:"postgres://user:password@localhost:5432/petstore?sslmode=disable" required:"true"`
 }
 
-func New(logger *zap.SugaredLogger, storage storage.CropURLStorage) (*Resources, error) {
+func New(storage storage.CropURLStorage) (*Resources, error) {
 	// parse flags
 	conf := Config{}
 	err := envconfig.Process("", &conf)
