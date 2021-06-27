@@ -31,8 +31,9 @@ func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath stri
 
 	// define routes
 	router := chi.NewRouter()
-	router.Get("/", handler.Redirect(stor))
-	router.Get("/new_link", handler.NewLink(stor, logger))
+	router.Get("/{shortID}", handler.Redirect(stor))
+	router.Post("/new-link", handler.NewLink(stor, logger))
+	router.Post("/delete", handler.Delete(stor, logger))
 
 	/*
 		/user/login
