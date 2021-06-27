@@ -7,6 +7,7 @@ type CropURLStorage interface {
 	Close()
 
 	IsSet(string) bool
-	AddURI(*model.LinkData) error
+	AddURL(*model.LinkData) error
 	Resolve(string) (string, error)
+	Delete(string) error
 }
