@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/seggga/cropurl/internal/resources"
+	// "github.com/seggga/cropurl/internal/resources"
 	"github.com/seggga/cropurl/internal/restapi"
-	stor "github.com/seggga/cropurl/internal/storage/postgres" // storage = postgres
+	stor "github.com/seggga/cropurl/internal/storage/memory" // storage = map in memory
 
 	"go.uber.org/zap"
 )
@@ -42,16 +42,16 @@ func main() {
 	if err != nil {
 		slogger.Errorw("error reading config for storage", err)
 	}
-	rsc, err := resources.New(storage)
-	if err != nil {
-		slogger.Errorw("Can not initialize storage.", err)
-	}
-	defer func() {
-		err = rsc.Release()
-		if err != nil {
-			slogger.Errorw("error during storage release.", "err", err)
-		}
-	}()
+	// rsc, err := resources.New(storage)
+	// if err != nil {
+	// 	slogger.Errorw("Can not initialize storage.", err)
+	// }
+	// defer func() {
+	// 	err = rsc.Release()
+	// 	if err != nil {
+	// 		slogger.Errorw("error during storage release.", "err", err)
+	// 	}
+	// }()
 
 	// initializing API server
 	slogger.Info("Configuring REST API server...")
