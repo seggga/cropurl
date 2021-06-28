@@ -32,13 +32,14 @@ func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath stri
 	// define routes
 	router := chi.NewRouter()
 	router.Get("/{shortID}", handler.Redirect(stor))
+	router.Get("/links/{shortID}", handler.ViewStatistics(stor))
 	router.Post("/new-link", handler.NewLink(stor, logger))
 	router.Post("/delete", handler.Delete(stor, logger))
 
 	/*
-		/user/login
-		/user/logout
-		/links/{shortURL}
+		todo:
+			/user/login
+			/user/logout
 	*/
 
 	// read TOML config for REST-API server

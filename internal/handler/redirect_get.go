@@ -13,7 +13,7 @@ func Redirect(stor storage.CropURLStorage) http.HandlerFunc {
 
 		// define shortID from users query
 		shortID := chi.URLParam(r, "shortID")
-		//defint corresponding long URL from database
+		// defint corresponding long URL from database
 		longURL, err := stor.Resolve(shortID)
 		if err != nil {
 			fmt.Fprintf(rw, "there is no URL linked to %s", shortID)
