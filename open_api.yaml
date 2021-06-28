@@ -51,12 +51,12 @@ paths:
           description: successful logout
           content: {}
   
-  /new_link:
+  /new-link:
     post:
       tags:
         - short_links
       summary: Creates a new pair 'short URL - long URL'
-      operationId: createShort
+      operationId: NewLink
       requestBody:
         description: Item object that needs to be added to the store
         content:
@@ -72,14 +72,14 @@ paths:
           content: {}
       
   
-  /links/{shortURL}:
+  /links/{shortID}:
     get:
       tags:
         - short_links
       summary: Shows statistics about specific short URL
-      operationId: getShortStat
+      operationId: ViewStatistics
       parameters:
-      - name: shortURL
+      - name: shortID
         in: path
         description: Short URL the user wants to get data about
         required: true
@@ -104,9 +104,9 @@ paths:
       tags:
         - short_links
       summary: Deletes data about specified short URL from the database
-      operationId: deleteShort
+      operationId: Delete
       parameters:
-      - name: shortURL
+      - name: shortID
         in: path
         description: Short URL the user wants to delete
         required: true
@@ -122,14 +122,14 @@ paths:
           description: Item not found
           content: {}
       
-  /{shortURL}:
+  /{shortID}:
     get:
       tags:
         - short_links
       summary: Implements redirect to the long-URL that corresponds to specified short URL
-      operationId: shortToLong
+      operationId: Redirect
       parameters:
-      - name: shortURL
+      - name: shortID
         in: path
         description: the short URL user wants to convert to the long URL stored in th database
         required: true
@@ -164,15 +164,15 @@ components:
     Link:
       type: object
       properties:
+        shortID:
+          type: string
         longURL:
           type: string
-        shortURL:
+        description:
           type: string
         statistics:
           type: integer
           format: int64
-        description:
-          type: string
           
   securitySchemes:
     api_key:
