@@ -12,6 +12,11 @@ import (
 	"go.uber.org/zap"
 )
 
+/*
+200
+400 Invalid input
+*/
+
 func NewLink(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 

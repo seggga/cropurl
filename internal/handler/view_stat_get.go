@@ -8,6 +8,11 @@ import (
 	"github.com/seggga/cropurl/internal/storage"
 )
 
+/*
+200 successful operation
+400 Invalid short URL
+*/
+
 func ViewStatistics(stor storage.CropURLStorage) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// define shortID from users query

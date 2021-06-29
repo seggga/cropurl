@@ -8,6 +8,11 @@ import (
 	"github.com/seggga/cropurl/internal/storage"
 )
 
+/*
+308 redirect to long URL
+400 Invalid short URL supplied
+*/
+
 func Redirect(stor storage.CropURLStorage) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 

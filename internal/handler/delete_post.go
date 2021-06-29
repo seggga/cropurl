@@ -11,6 +11,12 @@ import (
 	"go.uber.org/zap"
 )
 
+/*
+return
+	200 successful operation
+	400 Invalid short URL supplied
+*/
+
 func Delete(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// obtain request body
