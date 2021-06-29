@@ -69,7 +69,8 @@ paths:
       responses:
         200:
           description: successful operation
-        405:
+          content: {}
+        400:
           description: Invalid input
           content: {}
       
@@ -117,11 +118,11 @@ paths:
       security:
         - api_key: []
       responses:
+        200:
+          description: successful operation
+          content: {}
         400:
           description: Invalid short URL supplied
-          content: {}
-        404:
-          description: Item not found
           content: {}
       
   /{shortID}:
