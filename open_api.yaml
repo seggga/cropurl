@@ -67,6 +67,8 @@ paths:
       security:
         - api_key: []
       responses:
+        200:
+          description: successful operation
         405:
           description: Invalid input
           content: {}
