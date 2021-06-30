@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -11,19 +10,13 @@ import (
 	"go.uber.org/zap"
 )
 
-/*
-return
-	200 successful operation
-	400 Invalid short URL supplied
-*/
-
 func Delete(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// obtain request body
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			slogger.Errorw("Unable to parse request body", err)
-			http.Error(rw, "Unable to parse request body", http.StatusBadRequest)
+			slogger.Errorf("Unable to parse request body", err)
+			JSONError(rw, err, http.StatusBadRequest)
 			return
 		}
 		defer r.Body.Close()
@@ -33,17 +26,20 @@ func Delete(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.Handle
 		err = json.Unmarshal(body, linkPair)
 		if err != nil {
 			slogger.Errorw("Unable to unmarshal JSON", err)
-			http.Error(rw, "Unable to unmarshal JSON", http.StatusBadRequest)
+			JSONError(rw, err, http.StatusBadRequest)
 			return
 		}
 
 		err = stor.Delete(linkPair.ShortID)
 		if err != nil {
 			slogger.Errorw("error deleting short-to-long pair", err)
-			fmt.Fprintf(rw, "cannot delete %s", linkPair.ShortID)
+			JSONError(rw, err, http.StatusBadRequest)
 			return
 		}
 
-		fmt.Fprintf(rw, "data has been deleted\n%s\n%s", linkPair.ShortID, linkPair.LongURL)
+		slogger.Infof("short ID %s was deleted from database", linkPair.ShortID)
+		// output data
+		rw.Header().Set("Application", "CropURL")
+		rw.WriteHeader(http.StatusOK)
 	}
 }

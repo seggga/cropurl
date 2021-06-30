@@ -42,7 +42,6 @@ func New(configPath string) (*MemStorage, error) {
 
 // Delete method ...
 func (ms *MemStorage) Delete(shortID string) error {
-
 	if ms.IsSet(shortID) {
 		ms.mu.Lock()
 		defer ms.mu.Unlock()
@@ -50,8 +49,7 @@ func (ms *MemStorage) Delete(shortID string) error {
 		delete(ms.DataMap, shortID)
 		return nil
 	}
-
-	return fmt.Errorf("given short URL has not been set ")
+	return fmt.Errorf("given short URL was not found (%s)", shortID)
 }
 
 func (ms *MemStorage) Close() {
@@ -88,7 +86,7 @@ func (ms *MemStorage) Resolve(ShortID string) (string, error) {
 
 	// data was not found
 	if !ok {
-		return "", fmt.Errorf("there is no long URL on given short URL")
+		return "", fmt.Errorf("there is no long URL on given short URL (%s)", ShortID)
 	}
 
 	// produce increment on counter
@@ -112,7 +110,7 @@ func (ms *MemStorage) ViewStat(ShortID string) (*model.LinkData, error) {
 
 	// data was not found
 	if !ok {
-		return nil, fmt.Errorf("there is no data about given short URL")
+		return nil, fmt.Errorf("there is no data about given short URL %s", ShortID)
 	}
 
 	return &model.LinkData{

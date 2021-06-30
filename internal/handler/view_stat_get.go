@@ -1,36 +1,33 @@
 package handler
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/seggga/cropurl/internal/storage"
+	"go.uber.org/zap"
 )
 
-/*
-200 successful operation
-400 Invalid short URL
-*/
-
-func ViewStatistics(stor storage.CropURLStorage) http.HandlerFunc {
+func ViewStatistics(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// define shortID from users query
 		shortID := chi.URLParam(r, "shortID")
 		// define data about the specified short ID
 		urlData, err := stor.ViewStat(shortID)
 		if err != nil {
-			fmt.Fprintf(rw, "there is no URL linked to %s", shortID)
+			slogger.Debugf("get statistics error %w", err)
+			JSONError(rw, err, http.StatusBadRequest)
 			return
 		}
-		// output data
-		fmt.Fprintf(
-			rw,
-			"short ID: %s\nlong URL: %s\ndescriptoin: %s\ncounter: %d\n",
-			urlData.ShortID,
-			urlData.LongURL,
-			urlData.Description,
-			urlData.Statistics,
-		)
+		slogger.Debugf("statistics query on %s", shortID)
+		// output in json
+		rw.Header().Set("Content-Type", "application/json")
+		rw.WriteHeader(http.StatusOK)
+		err = json.NewEncoder(rw).Encode(urlData)
+		if err != nil {
+			slogger.Errorf("statistics query on %w", err)
+		}
+
 	}
 }
