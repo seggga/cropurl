@@ -56,6 +56,7 @@ func (ms *MemStorage) Close() {
 	// well, there is nothing to do to close map
 }
 
+// IsSet checks if requested data is located in the storage
 func (ms *MemStorage) IsSet(shortURL string) bool {
 	ms.mu.RLock()
 	defer ms.mu.RUnlock()
@@ -64,7 +65,7 @@ func (ms *MemStorage) IsSet(shortURL string) bool {
 	return ok
 }
 
-// AddURL method ...
+// AddURL method adds a new redirect data (short -> long URL)
 func (ms *MemStorage) AddURL(ld *model.LinkData) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
@@ -77,7 +78,7 @@ func (ms *MemStorage) AddURL(ld *model.LinkData) error {
 	return nil
 }
 
-// Resolve method ...
+// Resolve method finds long URL that correstponds to given short ID
 func (ms *MemStorage) Resolve(ShortID string) (string, error) {
 	// find data in the storage
 	ms.mu.RLock()
