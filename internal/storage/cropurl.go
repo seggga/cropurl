@@ -4,7 +4,7 @@ import "github.com/seggga/cropurl/internal/storage/model"
 
 // CropURLStorage describes storage neccessary methods to work with the application
 type CropURLStorage interface {
-	// function New lets make it easy to create an instance of the storage specified
+	// function New() lets make it easy to create an instance of the storage from specified package
 
 	Close()                                   // close connection to the storage (database / file / ....)
 	IsSet(string) bool                        // checks if the short ID is in the database
