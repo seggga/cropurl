@@ -2,7 +2,7 @@ package storage
 
 import "github.com/seggga/cropurl/internal/storage/model"
 
-// CropURLStorage describes storage neccessary methods to work with the application
+// CropURLStorage describes storage necessary methods to work with the application.
 type CropURLStorage interface {
 	// function New() lets make it easy to create an instance of the storage from specified package
 

@@ -14,7 +14,6 @@ import (
 
 func NewLink(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-
 		// obtain request body
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {

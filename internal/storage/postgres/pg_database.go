@@ -7,7 +7,6 @@ import (
 	"github.com/seggga/cropurl/internal/storage"
 
 	"github.com/kelseyhightower/envconfig"
-	//"go.uber.org/zap"
 )
 
 type Resources struct {
@@ -46,7 +45,7 @@ func NewConn(storage storage.CropURLStorage) (*Resources, error) {
 	}, nil
 }
 
-// close opened resources
+// Release closes opened resources.
 func (r *Resources) Release() error {
 	// close DB connection
 	r.Conn.Close()

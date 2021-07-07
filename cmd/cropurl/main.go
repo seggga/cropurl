@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	// "github.com/seggga/cropurl/internal/resources"
 	"github.com/seggga/cropurl/internal/restapi"
 	stor "github.com/seggga/cropurl/internal/storage/memory" // storage = map in memory
 
@@ -23,7 +22,6 @@ func init() {
 }
 
 func main() {
-
 	flag.Parse()
 	fmt.Printf("%v\n", configPath)
 	// logger init
@@ -61,8 +59,8 @@ func main() {
 	}
 
 	slogger.Info("Starting REST API server...")
-	//nolint:errcheck : errors are hendled with the channel and will cause stopping the aplication
-	rapi.Start()
+	//nolint:errcheck : errors are hendled with the channel and will cause stopping the application
+	rapi.Start() //nolint
 	slogger.Info("The application is ready to serve requests.")
 
 	// waiting for events to stop API server

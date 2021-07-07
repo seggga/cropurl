@@ -14,21 +14,20 @@ import (
 	"go.uber.org/zap"
 )
 
-// RESTAPI represents a REST API business logic server
+// RESTAPI represents a REST API business logic server.
 type RESTAPI struct {
 	server http.Server
 	errors chan error
 	logger *zap.SugaredLogger
 }
 
-// ServerConfig lets get some server parameters with toml-file
+// ServerConfig lets get some server parameters with toml-file.
 type ServerConfig struct {
 	Addr string `toml:"API_ADDR"`
 }
 
-// New returns a new instance of the REST API server
+// New returns a new instance of the REST API server.
 func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath string) (*RESTAPI, error) {
-
 	// define routes
 	router := chi.NewRouter()
 	router.Get("/{shortID}", handler.Redirect(stor, logger))
@@ -59,7 +58,7 @@ func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath stri
 	}, nil
 }
 
-// Start method starts the API server
+// Start method starts the API server.
 func (rapi *RESTAPI) Start() {
 	go func() {
 		rapi.errors <- rapi.server.ListenAndServe()
@@ -67,7 +66,7 @@ func (rapi *RESTAPI) Start() {
 	}()
 }
 
-// Stop method stops API server
+// Stop method stops API server.
 func (rapi *RESTAPI) Stop() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

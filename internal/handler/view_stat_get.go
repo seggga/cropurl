@@ -28,6 +28,5 @@ func ViewStatistics(stor storage.CropURLStorage, slogger *zap.SugaredLogger) htt
 		if err != nil {
 			slogger.Errorf("statistics query on %w", err)
 		}
-
 	}
 }

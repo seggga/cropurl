@@ -10,7 +10,6 @@ import (
 
 func Redirect(stor storage.CropURLStorage, slogger *zap.SugaredLogger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-
 		// define shortID from users query
 		shortID := chi.URLParam(r, "shortID")
 		// defint corresponding long URL from database
