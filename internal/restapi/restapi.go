@@ -2,11 +2,9 @@ package restapi
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/BurntSushi/toml"
 	"github.com/go-chi/chi/v5"
 	"github.com/seggga/cropurl/internal/handler"
 	"github.com/seggga/cropurl/internal/storage"
@@ -27,7 +25,7 @@ type ServerConfig struct {
 }
 
 // New returns a new instance of the REST API server.
-func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath string) (*RESTAPI, error) {
+func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, srvAddr string) (*RESTAPI, error) {
 	// define routes
 	router := chi.NewRouter()
 	router.Get("/{shortID}", handler.Redirect(stor, logger))
@@ -41,16 +39,9 @@ func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, configPath stri
 			/user/logout
 	*/
 
-	// read TOML config for REST-API server
-	srvConfig := new(ServerConfig)
-	_, err := toml.DecodeFile(configPath, srvConfig)
-	if err != nil {
-		return nil, fmt.Errorf("error reading TOML config for REST-API server, %w", err)
-	}
-
 	return &RESTAPI{
 		server: http.Server{
-			Addr:    srvConfig.Addr,
+			Addr:    srvAddr,
 			Handler: router,
 		},
 		errors: make(chan error, 1),

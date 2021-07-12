@@ -19,8 +19,7 @@ type redirectData struct {
 	count       int
 }
 
-func New(configPath string) (*MemStorage, error) {
-	// there is no need to use a config for this storage type
+func New() (*MemStorage, error) {
 	memStor := new(MemStorage)
 	memStor.DataMap = map[string]*redirectData{
 		"asdf": {

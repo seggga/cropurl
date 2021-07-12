@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -14,19 +13,18 @@ import (
 )
 
 var (
-	configPath string
+	srvAddr string
 )
 
 func init() {
-	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to configuration TOML-file")
+	flag.StringVar(&srvAddr, "address", "localhost:8080", "API server address and port number")
+	//	flag.StringVar(&pgAddr, "postgres", "localhost:12345", "address and port for Postgres connection")
 }
 
 func main() {
 	flag.Parse()
-	fmt.Printf("%v\n", configPath)
 	// logger init
-	//nolint:errcheck : errors are unlikely while working with STDOUT
-	logger, _ := zap.NewProduction()
+	logger, _ := zap.NewProduction() // nolint:errcheck : errors are unlikely while working with STDOUT
 	defer func() {
 		_ = logger.Sync()
 	}()
@@ -36,31 +34,21 @@ func main() {
 
 	// initializing storage
 	slogger.Info("Configuring and initializing storage...")
-	storage, err := stor.New(configPath)
+	storage, err := stor.New()
 	if err != nil {
-		slogger.Errorw("error reading config for storage", err)
+		slogger.Errorw("error creating storage", err)
 	}
-	// rsc, err := resources.New(storage)
-	// if err != nil {
-	// 	slogger.Errorw("Can not initialize storage.", err)
-	// }
-	// defer func() {
-	// 	err = rsc.Release()
-	// 	if err != nil {
-	// 		slogger.Errorw("error during storage release.", "err", err)
-	// 	}
-	// }()
 
 	// initializing API server
 	slogger.Info("Configuring REST API server...")
-	rapi, err := restapi.New(slogger, storage, configPath)
+	rapi, err := restapi.New(slogger, storage, srvAddr)
 	if err != nil {
 		slogger.Errorw("error configuring REST API server", err)
 	}
 
 	slogger.Info("Starting REST API server...")
-	//nolint:errcheck : errors are hendled with the channel and will cause stopping the application
-	rapi.Start() //nolint
+
+	rapi.Start() // nolint:errcheck : errors are hendled with the channel and will cause stopping the application
 	slogger.Info("The application is ready to serve requests.")
 
 	// waiting for events to stop API server
