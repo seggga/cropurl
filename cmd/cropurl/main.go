@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,27 +11,38 @@ import (
 	stor "github.com/seggga/cropurl/internal/storage/memory" // storage = map in memory
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var (
-	srvAddr string
+	srvAddr  string
+	logLevel string
 )
 
 func init() {
-	flag.StringVar(&srvAddr, "address", "localhost:8080", "API server address and port number")
+	flag.StringVar(&srvAddr, "address", ":8080", "API server address and port number")
+	flag.StringVar(&logLevel, "loglevel", "debug", "logging level (info/error/debug")
 	//	flag.StringVar(&pgAddr, "postgres", "localhost:12345", "address and port for Postgres connection")
 }
 
 func main() {
 	flag.Parse()
-	// logger init
-	logger, _ := zap.NewProduction() // nolint:errcheck : errors are unlikely while working with STDOUT
+
+	// create zap logger
+	cfg := loggerInit(logLevel)
+	logger, err := cfg.Build()
+	if err != nil {
+		fmt.Printf("cannot initialize logger, program exit %v", err)
+		return
+	}
 	defer func() {
 		_ = logger.Sync()
 	}()
 
 	slogger := logger.Sugar()
 	slogger.Info("Starting the application...")
+	slogger.Infof("env server address: %s", srvAddr)
+	slogger.Infof("env log level: %s", logLevel)
 
 	// initializing storage
 	slogger.Info("Configuring and initializing storage...")
@@ -68,4 +80,29 @@ func main() {
 	}
 
 	slogger.Info("The app is calling the last defers and will be stopped.")
+}
+
+// create a zap config structure.
+func loggerInit(logLevel string) *zap.Config {
+	zapLevel := zap.NewAtomicLevelAt(zapcore.InfoLevel)
+	switch logLevel {
+	case "info":
+		zapLevel = zap.NewAtomicLevelAt(zapcore.InfoLevel)
+	case "error":
+		zapLevel = zap.NewAtomicLevelAt(zapcore.ErrorLevel)
+	case "debug":
+		zapLevel = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	}
+	return &zap.Config{
+		Encoding:    "json",
+		Level:       zapLevel,
+		OutputPaths: []string{"stdout"},
+		EncoderConfig: zapcore.EncoderConfig{
+			MessageKey:  "message",
+			LevelKey:    "level",
+			EncodeLevel: zapcore.CapitalLevelEncoder,
+			TimeKey:     "time",
+			EncodeTime:  zapcore.ISO8601TimeEncoder,
+		},
+	}
 }
