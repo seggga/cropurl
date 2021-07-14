@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	go build -v ./cmd/cropurl/main.go
+	go build -o ./cropurl ./cmd/cropurl/main.go
 
 .PHONY: lint
 lint:
