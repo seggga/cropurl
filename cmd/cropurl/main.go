@@ -21,7 +21,7 @@ var (
 
 func init() {
 	flag.StringVar(&srvAddr, "address", ":8080", "API server address and port number")
-	flag.StringVar(&logLevel, "loglevel", "debug", "logging level (info/error/debug")
+	flag.StringVar(&logLevel, "loglevel", "info", "logging level (possible values are info, error, debug")
 	//	flag.StringVar(&pgAddr, "postgres", "localhost:12345", "address and port for Postgres connection")
 }
 
