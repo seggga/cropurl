@@ -1,0 +1,68 @@
+HTTP-mux requirements:
+    handler's signature should be like in http.HandlerFunc
+    middleware support
+    detailed documentation
+    methods suppurt (get/post/...)    
+
+important things:
+    up to date
+    number of downloads (more is better)
+
+
+2, 4, 6, 7 meet mandatory requirements
+according to "important things" routers are prioritized as folows 4, 2, 6, 7
+
+1) net/http - https://golang.org/pkg/net/http/
+standard library
+detailed documentation
+no methods support
+
+2) gorilla/mux - https://github.com/gorilla/mux
+stars       - 14500		
+last commit - 22 Aug 2020	
+functions signature 
+detailed documentation
+middleware support
+methods support, query-parameters, URL-prefixes, ...
+
+3) httprouter - https://github.com/julienschmidt/httprouter	
+last commit - 21 Sep 2020
+proprietary functions signature
+there is a limitation on partial path match (short url links should be set as a query parameter)
+
+4) chi - https://github.com/go-chi/chi
+srars - 9500
+last commit - 30 Apr 2021
+functions signature
+detailed documentation
+middleware support
+methods support
+
+5) fasthttp - https://github.com/valyala/fasthttp
+stars - 15200
+proprietary functions signature
+last commit - 1 Jun 2021
+proprietary functions signature
+
+6) gorouter - https://github.com/vardius/gorouter
+stars - 95
+last commit - 27 Nov 2020
+functions signature
+detailed documentation
+middleware support,
+methods support
+
+7) goji - https://github.com/goji/goji
+stars - 	862
+last commit - 27 Jan 2019
+functions signature
+detailed documentation
+middleware support,
+methods support
+
+8) bone - https://github.com/go-zoo/bone
+stars` - 1300	
+last commit - 17 Apr 2019
+functions signature,
+pure documentation
+methods support
