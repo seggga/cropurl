@@ -1,70 +1,68 @@
-Обязательно:
-    сигнатура обработчиков, аналогичная http.HandlerFunc
-    поддержка middleware
-    подробная документация
-    поддержка методов    
+HTTP-mux requirements:
+    handler's signature should be like in http.HandlerFunc
+    middleware support
+    detailed documentation
+    methods suppurt (get/post/...)    
 
-Важно:
-    актуальность
-    популярность
+important things:
+    up to date
+    number of downloads (more is better)
 
 
-обязательным требованиям соответствует 2, 4, 6, 7
-согласно критериям "Важно" роутеры располагаются в следующем порядке: 4, 2, 6, 7
-
+2, 4, 6, 7 meet mandatory requirements
+according to "important things" routers are prioritized as folows 4, 2, 6, 7
 
 1) net/http - https://golang.org/pkg/net/http/
-стандартный пакет
-подробная документация
-нет разделения на методы
+standard library
+detailed documentation
+no methods support
 
 2) gorilla/mux - https://github.com/gorilla/mux
-звезд       - 14500		
+stars       - 14500		
 last commit - 22 Aug 2020	
-сигнатура функций совпадает, 
-подробная документация, 
-встроен функционал middleware
-разделение на методы, query-параметры, URL-префикс, заголовок…
+functions signature 
+detailed documentation
+middleware support
+methods support, query-parameters, URL-prefixes, ...
 
 3) httprouter - https://github.com/julienschmidt/httprouter	
 last commit - 21 Sep 2020
-своя сигнатура функций - добавляет params,
-поддержка query-параметров,
-ограничение на неточное совпадение пути (т.е. короткие ссылки придется обозначать как параметр)
+proprietary functions signature
+there is a limitation on partial path match (short url links should be set as a query parameter)
 
 4) chi - https://github.com/go-chi/chi
-звезд - 9500
+srars - 9500
 last commit - 30 Apr 2021
-сигнатура функций совпадает,
-подробная документация,
-имеется функционал middleware
-разделение на методы
+functions signature
+detailed documentation
+middleware support
+methods support
 
 5) fasthttp - https://github.com/valyala/fasthttp
-звезд - 	15200
-своя сигнатура функций,
+stars - 15200
+proprietary functions signature
 last commit - 1 Jun 2021
-своя сигнатура функций
+proprietary functions signature
 
 6) gorouter - https://github.com/vardius/gorouter
-звезд - 95
+stars - 95
 last commit - 27 Nov 2020
-сигнатура функций совпадает,
-подробная документация,
-функционал middleware,
-разделение на методы,
+functions signature
+detailed documentation
+middleware support,
+methods support
 
 7) goji - https://github.com/goji/goji
-звезд - 	862
+stars - 	862
 last commit - 27 Jan 2019
-сигнатура функций совпадает,
-подробная документация
-функционал middleware,
-разделение на методы
+functions signature
+detailed documentation
+middleware support,
+methods support
 
 8) bone - https://github.com/go-zoo/bone
-звезд - 	1300	
+stars` - 1300	
 last commit - 17 Apr 2019
-сигнатура функций совпадает,
-скудная документация
-разделение на методы,
+functions signature,
+pure documentation
+methods support

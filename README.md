@@ -1,7 +1,7 @@
 # cropurl
 course project in backend #1 golang
 
-CropURL service is a tool that creates a short, unique URL. The service will redirect to the specific website definded by the customer. The main goal is to make a URL shorter and simpler.
+CropURL service is a tool that links a short URL to a long unreadable and untypable by hand link. The service will redirect to the specific website definded by the customer. The main goal is to make a URL shorter and simpler to pass.
 
 
 ## Choosing a router package
