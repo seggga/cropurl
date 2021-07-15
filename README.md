@@ -4,8 +4,8 @@ course project in backend #1 golang
 CropURL service is a tool that links a short URL to a long unreadable and untypable by hand link. The service will redirect to the specific website definded by the customer. The main goal is to make a URL shorter and simpler to pass.\
 
 
-### chi package (https://github.com/go-chi/chi) is used as http multiplexer  
-
+### choose a router
+chi package (https://github.com/go-chi/chi) is used as http multiplexer  
 
 <details>
 <summary>Choosing a router package</summary>
