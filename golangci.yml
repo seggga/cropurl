@@ -49,7 +49,6 @@ linters:
     - godot
     - gofmt
     - goimports
-    - golint
     - misspell
     - nakedret
     - structcheck
