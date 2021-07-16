@@ -27,6 +27,10 @@ func init() {
 
 func main() {
 	flag.Parse()
+	addr := os.Getenv("ADDR")
+	if addr != "" {
+		srvAddr = addr
+	}
 
 	// create zap logger
 	cfg := loggerInit(logLevel)
