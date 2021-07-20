@@ -27,7 +27,7 @@ func init() {
 
 func main() {
 	flag.Parse()
-	addr := os.Getenv("ADDR")
+	addr := os.Getenv("PORT")
 	if addr != "" {
 		srvAddr = addr
 	}
