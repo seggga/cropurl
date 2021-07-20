@@ -2,7 +2,7 @@ module github.com/seggga/cropurl
 
 go 1.16
 
-// +heroku goVersion go1.16 install ./cmd/cropurl/main.go ./bin/cropurl
+// +heroku goVersion go1.16 install ./cmd/cropurl
 
 require (
 	github.com/BurntSushi/toml v0.3.1
