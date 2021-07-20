@@ -28,6 +28,7 @@ type ServerConfig struct {
 func New(logger *zap.SugaredLogger, stor storage.CropURLStorage, srvAddr string) (*RESTAPI, error) {
 	// define routes
 	router := chi.NewRouter()
+	router.Get("/", handler.Home(logger))
 	router.Get("/{shortID}", handler.Redirect(stor, logger))
 	router.Get("/links/{shortID}", handler.ViewStatistics(stor, logger))
 	router.Post("/new-link", handler.NewLink(stor, logger))
