@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 	addr := os.Getenv("PORT")
 	if addr != "" {
-		srvAddr = addr
+		srvAddr = ":" + addr
 	}
 
 	// create zap logger
