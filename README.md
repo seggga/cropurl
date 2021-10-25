@@ -130,4 +130,16 @@ Let's say RESTAPI server's address is http://localhost:8080
 
 
 
+Open API
 
+the service implements functions as follows:
+1) user authorisation 
+    - /user/login       - POST
+    - /user/logout      - POST
+2) create short URL that corresponds to specified long URL
+    - /new_linknks      - POST
+3) manage stored short URLs
+    - /links/{shortURL} - GET       - view the statistics
+    - /links/{shortURL} - DELETE    - delete short URL
+4) redirect users request to the long URL
+    - /{shortURL}       - GET
